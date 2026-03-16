@@ -1,0 +1,139 @@
+<!DOCTYPE html> 
+<html lang="es"><!-- esta página es el motor de búsqueda donde el usuario busca objetos perdidos o encontrados -->
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    
+    <title>Motor de Búsqueda</title> 
+
+    <!-- estilos globales -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+
+    <!-- estilos del modo oscuro / claro -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+</head>
+
+<body>
+
+<!-- logo arriba que también es un botón para regresar al menú -->
+<a href="/menu" class="logo-top">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="">        
+</a>
+
+<!-- título principal -->
+<h1 style="text-align:center; margin-top:20px; color:#E0C58F;">motor de búsqueda</h1>
+
+<!-- barra de filtros de búsqueda -->
+<div class="barra_busqueda">
+    <form id="filtroForm">
+
+        <!-- buscar por nombre -->
+        <input type="text" id="Motor" placeholder="buscar objeto..." autocomplete="off">
+
+        <!-- filtrar por categoría -->
+        <select id="categoria">
+            <option value="">todas las categorías</option>
+            <option value="Documentos">documentos</option>
+            <option value="Tecnología">tecnología</option>
+            <option value="Accesorios">accesorios</option>
+            <option value="Ropa">ropa</option>
+            <option value="Llaves">llaves</option>
+            <option value="Otros">otros</option>
+        </select>
+
+        <!-- filtrar por tipo: perdido / encontrado -->
+        <select id="tipo">
+            <option value="">todos</option>
+            <option value="perdido">perdido</option>
+            <option value="encontrado">encontrado</option>
+        </select>
+
+    </form>
+</div>
+
+<!-- aquí se mostrarán todas las tarjetas de resultados -->
+<div class="grid"></div> 
+
+</body>
+
+<script>
+
+    /* guardar referencias a los filtros */
+    const motor = document.getElementById("Motor");
+    const categoria = document.getElementById("categoria");
+    const tipo = document.getElementById("tipo");
+    const form = document.getElementById("filtroForm");
+
+    /* función que hace la búsqueda en el servidor */
+    async function buscar(e) {
+
+        if (e) e.preventDefault(); // evita que la página se recargue al enviar el formulario
+
+        // valores actuales de los filtros
+        const q = motor.value;
+        const cat = categoria.value;
+        const tip = tipo.value;
+
+        // construir parámetros para la ruta /busquedas
+        const params = new URLSearchParams({
+            q: q,
+            categoria: cat,
+            tipo: tip
+        });
+
+        // pedir resultados al backend
+        const res = await fetch(`/busquedas?${params.toString()}`);
+        const datos = await res.json();
+
+        // contenedor donde van las tarjetas
+        const caja = document.querySelector(".grid");
+        caja.innerHTML = ""; // limpiar antes de volver a pintar
+
+        // si el backend envía datos válidos
+        if (datos["datos"]) {
+
+            const objetos = datos["datos"];
+
+            // recorrer cada objeto encontrado
+            objetos.forEach(objeto => {
+
+                // si el objeto tiene una imagen, se muestra
+                let imagen_html = "";
+                if (objeto.IMAGEN) {
+                    imagen_html = `<img src="${objeto.IMAGEN}" alt="imagen del objeto">`;
+                }
+
+                // plantilla html de la tarjeta
+                let html = `
+                    <div class="tarjeta" data-id-objeto="${objeto.ID_OBJETO}">
+                        ${imagen_html}
+                        <div class="contenido">
+                            <div class="titulo">${objeto.NOMBRE}</div>
+                            <div class="categoria">categoría: ${objeto.CATEGORIA}</div>
+                            <div class="color">color: ${objeto.COLOR}</div>
+                            <a class="boton" href="/detalles/${objeto.ID_OBJETO}">ver detalles</a>
+                        </div>
+                    </div>
+                `;
+
+                // agregar tarjeta al grid
+                caja.insertAdjacentHTML("beforeend", html);
+            });
+
+        } else {
+            // si no hay resultados, mostrar el mensaje enviado por el backend
+            caja.innerHTML = datos["mensaje"];
+        }
+    }
+
+    /* actualizar resultados cuando el usuario escribe o cambia filtros */
+    motor.addEventListener("input", buscar);
+    categoria.addEventListener("change", buscar);
+    tipo.addEventListener("change", buscar);
+    form.addEventListener("submit", buscar);
+
+    /* ejecutar búsqueda inicial al cargar la página */
+    buscar();
+
+</script>
+</html>

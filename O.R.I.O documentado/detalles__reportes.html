@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Detalles | O.R.I.O{% endblock %}
+
+{% block extra_css %}
+<!-- Estilos para modos claro/oscuro/alto contraste -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div class="contenedor detalle-container">
+
+    {# ============================
+       si algo salio mal, se muestra el mensaje de error
+       ================================= #}
+    {% if error %}
+        <div class="detalle-card">
+            <div class="error" style="text-align:center; padding:40px; color:var(--crimson);">
+                {{ error }} <!-- Mensaje de error recibido desde el backend -->
+            </div>
+
+            <!-- Botón para regresar al inicio -->
+            <a href="/" class="btn-volver">Volver al inicio</a>
+        </div>
+
+    {% else %}
+    {# ==========================================
+       se muestra el detalle del reporte si no hay errores
+       =========================================== #}
+
+        <div class="contenedor-principal detalle-card">
+
+            <!-- COLUMNA IZQUIERDA: Imagen del objeto -->
+            <div class="contenedor-imagen">
+
+                {% if item.IMAGEN %}
+                    <!-- Mostrar imagen si existe -->
+                    <img class="imagen" src="{{ item.IMAGEN }}" alt="Imagen del objeto">
+
+                {% else %}
+                    <!-- Mensaje alternativo si no hay imagen -->
+                    <div class="info-detalle">
+                        <span class="label">Imagen:</span> No hay imagen del objeto
+                    </div>
+                {% endif %}
+            </div>
+
+            <!-- COLUMNA DERECHA: Datos del reporte -->
+            <div class="contenedor-datos">
+
+                <h1>Detalles del Objeto</h1>
+
+                <!-- Tipo de reporte (perdido/encontrado) -->
+                {% if item.tipo %}
+                    <p class="info-detalle tipo-report">
+                        <span class="label">Tipo de reporte:</span> {{ item.tipo|capitalize }}
+                    </p>
+                {% endif %}
+
+                <!-- Datos generales del objeto -->
+                <p class="info-detalle"><span class="label">Nombre:</span> {{ item.NOMBRE }}</p>
+                <p class="info-detalle"><span class="label">Categoría:</span> {{ item.CATEGORIA }}</p>
+                <p class="info-detalle"><span class="label">Color:</span> {{ item.COLOR }}</p>
+                <p class="info-detalle"><span class="label">Fecha Reporte:</span> {{ item.FECHA }}</p>
+                <p class="info-detalle">
+                    <span class="label">Persona que reportó:</span> 
+                    {{ item.NOMBRE_USUARIO or 'No disponible' }}
+                </p>
+
+                <!-- Observaciones adicionales -->
+                <p class="info-detalle">
+                    <span class="label">Observaciones:</span><br>
+
+                    {% if item.OBSERVACIONES %}
+                        {{ item.OBSERVACIONES }}
+                    {% else %}
+                        No hay observaciones para este objeto
+                    {% endif %}
+                </p>
+
+                <!-- Botón para regresar a la página anterior -->
+                <a href="javascript:history.back()" class="btn-volver">Volver</a>
+
+            </div>
+        </div>
+
+    {% endif %}
+</div>
+
+{% endblock %}

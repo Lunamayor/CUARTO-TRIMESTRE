@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O.R.I.O - Registro</title>
+
+<!--fuentes y estilos-->
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/registro.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+</head>
+
+<body>
+
+    <!-- estrellitas :)-->
+<div class="stars">
+    <div class="star" style="left:10%"></div>
+    <div class="star" style="left:40%"></div>
+    <div class="star" style="left:70%"></div>
+</div>
+
+<!-- fondo con degrade-->
+<header>
+    <div class="logo-container">
+         <img src="{{ url_for('static', filename='img/logo_orio.png') }}" class="logo-image">
+        <div>
+            <div class="logo-text">O.R.I.O</div>
+            <div class="subtitle">Organizador de Recursos e Identificador de Objetos</div>
+        </div>
+    </div>
+</header>
+
+<!-- contenido principal -->
+<div class="main-container">
+    <div class="content">
+
+        <!-- lado izquierdo con imagen y texto-->
+        <div class="left-side">
+            <img src="{{ url_for('static', filename='img/img-registro.png') }}">
+            <h1>Crea tu cuenta</h1>
+            <p>Regístrate para comenzar a gestionar tus objetos.</p>
+        </div>
+
+        <!-- lado derecho con formulario de registro-->
+        <div class="right-side">
+            <div class="form-container">
+                <h2>Registro</h2>
+
+                <form id="form-registro"> <!-- el submit se maneja con JS para validar antes de enviar -->
+
+                    <div class="input-group">
+                        <input type="text" name="id_usuario" placeholder="Usuario" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="text" name="nombre" placeholder="Nombre visible" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" name="contrasena" id="contrasena" placeholder="Contraseña" required>
+                    </div>
+
+                    <!-- reglas de contreaseñas-->
+                    <div class="password-rules" id="password-rules">
+                        <p id="rule-length">✖ Mínimo 6 caracteres</p>
+                        <p id="rule-letter">✖ Al menos una letra</p>
+                        <p id="rule-number">✖ Al menos un número</p>
+                    </div>
+
+                    <!-- validación de contraseña repetida -->
+                    <div class="input-group">
+                        <input type="password" name="contrasena_repetida" id="contrasena_repetida" placeholder="Repetir contraseña" required>
+                    </div>
+
+                    <div class="security-section">
+
+                      <div class="security-title">Preguntas de seguridad</div>
+
+                      <div class="input-group">
+                          <input type="text" name="pregunta1" placeholder="Pregunta de seguridad 1" required>
+                      </div>
+
+                      <div class="input-group">
+                          <input type="text" name="respuesta1" placeholder="Respuesta 1" required>
+                      </div>
+
+                      <div class="input-group">
+                          <input type="text" name="pregunta2" placeholder="Pregunta de seguridad 2" required>
+                      </div>
+
+                      <div class="input-group">
+                          <input type="text" name="respuesta2" placeholder="Respuesta 2" required>
+                      </div>
+
+                    </div>
+
+                    <button type="submit">Crear Cuenta</button>
+
+                    <div id="mensaje" class="mensaje"></div>
+
+                    <div class="extra-links">
+                        <p>¿Ya tienes cuenta? <a href="/inicio">Iniciar sesión</a></p>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- pie de pag-->
+<footer>
+    © 2026 O.R.I.O — Todos los derechos reservados
+</footer>
+
+<!-- script de validación -->
+<script>
+const formRegistro = document.getElementById("form-registro")
+const mensaje = document.getElementById("mensaje")
+
+const passwordInput = document.getElementById("contrasena")
+const pass2Input = document.getElementById("contrasena_repetida")
+
+const ruleLength = document.getElementById("rule-length")
+const ruleLetter = document.getElementById("rule-letter")
+const ruleNumber = document.getElementById("rule-number")
+
+// función para actualizar el estado de las reglas de contraseña
+function actualizarRegla(elemento, condicion, texto){
+    if(condicion){
+        elemento.classList.add("valid")
+        elemento.classList.remove("invalid")
+        elemento.innerHTML = "✔ " + texto
+    } else {
+        elemento.classList.add("invalid")
+        elemento.classList.remove("valid")
+        elemento.innerHTML = "✖ " + texto
+    }
+}
+
+// función para validar la contraseña según las reglas establecidas
+function validarPassword(pass){
+    let valido = true
+
+    const cumpleLongitud = pass.length >= 6
+    const cumpleLetra = /[A-Za-z]/.test(pass)
+    const cumpleNumero = /[0-9]/.test(pass)
+
+    // actualizar el estado de cada regla en la interfaz
+    actualizarRegla(ruleLength, cumpleLongitud, "Mínimo 6 caracteres")
+    actualizarRegla(ruleLetter, cumpleLetra, "Al menos una letra")
+    actualizarRegla(ruleNumber, cumpleNumero, "Al menos un número")
+
+    if(!cumpleLongitud || !cumpleLetra || !cumpleNumero){
+        valido = false
+    }
+
+    return valido
+}
+
+// validar contraseña en tiempo real mientras el usuario escribe
+passwordInput.addEventListener("input", () => {
+    validarPassword(passwordInput.value)
+})
+
+// manejar el envío del formulario, validando las contraseñas antes de enviar
+formRegistro.addEventListener("submit", async (e) => {
+    e.preventDefault()
+
+    const pass = passwordInput.value
+    const pass2 = pass2Input.value
+
+    if(pass !== pass2){
+        mensaje.innerText = "Las contraseñas no coinciden"
+        mensaje.style.color = "#b23b3b"
+        return
+    }
+
+    if(!validarPassword(pass)){
+        mensaje.innerText = "La contraseña no cumple los requisitos"
+        mensaje.style.color = "#b23b3b"
+        return
+    }
+
+    mensaje.innerText = "Creando cuenta..."
+    mensaje.style.color = "#112250"
+
+    const datos = new FormData(formRegistro)
+
+    const res = await fetch("/guardar_usuario", {
+        method:"POST",
+        body:datos
+    })
+
+    const data = await res.json()
+
+    mensaje.innerText = data.mensaje
+    mensaje.style.color = data.ok ? "#1e7e4f" : "#b23b3b"
+
+    if(data.ok){
+        setTimeout(() => {
+            window.location.href="/menu"
+        },800)
+    }
+})
+</script>
+
+</body>
+</html>

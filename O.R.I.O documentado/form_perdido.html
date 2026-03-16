@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+<!-- Título que aparecerá en la pestaña del navegador -->
+{% block title %}Registrar objeto perdido{% endblock %}
+
+{% block extra_css %}
+<!-- Hoja de estilos específica para este formulario -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/form_perdido.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Contenedor principal del fondo y animaciones -->
+<div id="malasPracticas">
+    <!-- Estrellas doradas dispersas -->
+    <div class="star" style="top:5%; left:5%; width:2px; height:2px; animation-duration:1.5s;"></div>
+    <div class="star" style="top:10%; left:20%; width:1.5px; height:1.5px; animation-duration:2s;"></div>
+
+ <!-- =========================
+         contenedor del formulario
+         ========================= -->
+    <div class="form-container">
+        <!-- botón regresar -->
+        <div class="back-btn-container">
+            <button type="button" class="btn-config back-btn" onclick="(document.referrer ? history.back() : window.location='/menu')">← Volver</button>
+        </div>
+
+        <!-- Encabezado del formulario -->
+        <div class="form-header">
+            
+            <h1>Registro de Objetos Perdidos</h1>
+        </div>
+
+        <!-- =========================
+             aqui esta el formulario de reporte
+             ========================= -->
+        <form id="reportForm" enctype="multipart/form-data">
+
+            <!-- División en 2 columnas -->
+            <div class="form-columns">
+                <!-- COLUMNA IZQUIERDA -->
+                <div class="left-column">
+                    <label>Nombre del objeto</label>
+                    <input type="text" id="nombre_objeto" name="nombre_objeto" maxlength="66" required>
+
+                    <label class="multiple">Estado del objeto</label>
+                    <div class="select-wrap">
+                        <select id="estado" name="estado" required>
+                            <option value="Bueno">Bueno</option>
+                            <option value="Regular">Regular</option>
+                            <option value="Malo">Malo</option>
+                        </select>
+                    </div>
+
+                    <label>Color dominante</label>
+                    <input type="text" id="color_dominante" name="color_dominante" maxlength="22" required>
+
+                    <label>Lugar donde se perdió</label>
+                    <input type="text" name="lugar" required>
+                </div>
+
+                <!-- COLUMNA DERECHA -->
+                <div class="right-column">
+                    <label>Fecha de pérdida</label>
+                    <input type="date" id="fecha" name="fecha" required>
+
+                    <label>Ficha del aprendiz</label>
+                    <input type="number" id="ficha" name="ficha" required>
+
+                    <!-- categoria del objeto-->
+                    <label class="multiple">Categoría</label>
+                    <div class="select-wrap">
+                        <select name="categoria" required>
+                            {% if categorias %}
+                                {% for cat in categorias %}
+                                    <option value="{{ cat.ID_CATEGORIA }}">{{ cat.ID_CATEGORIA }}</option>
+                                {% endfor %} <!-- Opciones de categoría -->
+                            {% else %}
+                                <option value="">Sin categorías</option>
+                            {% endif %}
+                        </select>
+                    </div>
+
+                    <!-- Imagen del objeto (opcional)-->
+                    <label>Imagen del objeto (opcional)</label>
+                    <input type="file" id="imagen" name="imagen" accept="image/*">
+
+                    <!-- Comentario (opcional) -->
+                    <label>Comentario (opcional)</label>
+                    <textarea name="comentario" maxlength="1000" placeholder="Detalles adicionales"></textarea>
+                </div>
+            </div>
+
+            <!-- Área de botones -->
+            <div class="btn-area">
+                <button type="submit" class="btn-config">Publicar</button>
+                <button type="reset" class="btn-config">Limpiar</button>
+            </div>
+
+            <!-- Área de mensaje de alerta -->
+            <div id="MensajeAlerta" style="margin-top:12px;"></div>
+        </form>
+    </div>
+
+    <!-- Script para manejar el envío del formulario -->
+    <script>
+
+        // Obtener el formulario
+        const form = document.getElementById('reportForm');
+
+        // Obtener el formulario
+        form.addEventListener('submit', async (e) => {
+
+             // Evita que la página se recargue
+            e.preventDefault();
+
+            // Convertir los datos del formulario en FormData
+            const formData = new FormData(form);
+            const mensajeAlerta = document.getElementById('MensajeAlerta');
+            
+            try {
+                // Mostrar mensaje de carga
+                mensajeAlerta.innerHTML = 'Enviando reporte...';
+                mensajeAlerta.style.color = '#006bb6';
+                
+                 // Enviar datos al backend con fetch
+                const response = await fetch('/submit_per', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                 // Obtener respuesta como texto
+                const text = await response.text();
+                let result;
+
+                // Intentar convertir la respuesta a JSON
+                try {
+                    result = JSON.parse(text);
+                } catch (err) {
+                    console.error("El servidor devolvió HTML en vez de JSON:", text);
+                    throw new Error("Error 500: La respuesta del servidor no es válida.");
+                }
+                
+                // Verificar si hay error en la respuesta
+                if (result.error || !response.ok) {
+                    mensajeAlerta.innerHTML = result.mensaje || "Error al enviar los datos";
+                    mensajeAlerta.style.color = "red";
+                    console.error("Error:", result);
+                } else {
+                    mensajeAlerta.innerHTML = result.mensaje || "Reporte enviado correctamente";
+                    mensajeAlerta.style.color = "green";
+                    // Limpiar formulario
+                    form.reset();
+                    // Redirigir después de 2 segundos
+                    setTimeout(() => {
+                        window.location.href = '/menu';
+                    }, 2000);
+                }
+            } catch (error) {
+                // Error general de conexión o servidor
+                mensajeAlerta.innerHTML = "Error al enviar los datos: " + error.message;
+                mensajeAlerta.style.color = "red";
+                console.error("Error completo:", error);
+            }
+        });
+    </script>
+</div>
+{% endblock %}

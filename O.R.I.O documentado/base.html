@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}O.R.I.O{% endblock %}</title>
+
+<!-- fuente bodoni moda -->
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- fuente libre baskerville -->
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville&display=swap" rel="stylesheet">
+
+<!-- iconos font awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- estilos del modo oscuro / claro -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+
+<!-- estilos base del proyecto -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+
+<script>
+/* aplicar el modo guardado en cualquier página
+   si el usuario antes eligió modo oscuro o sepia,
+   el sistema lo agrega al body al cargar */
+window.addEventListener('DOMContentLoaded', function() {
+    const modo = localStorage.getItem('modo');
+    if (modo && modo !== 'claro') {
+        document.body.classList.add('modo-' + modo);
+    }
+});
+</script>
+
+<!-- estilos globales compartidos -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
+
+<!-- estilos extra por página, opcionales -->
+{% block extra_css %}{% endblock %}
+
+</head>
+
+<body>
+
+<!-- barra lateral -->
+<div class="sidebar" id="sidebar">
+
+    <!-- foto del usuario en la barra lateral -->
+    <div class="sidebar-profile" id="sidebarProfile" onclick="openProfileModal()" style="position:relative;">
+        <img id="sidebarProfileImg" src="/static/img/image.png" alt="Perfil">
+    </div>
+
+    <!-- menú del sistema -->
+    <div class="menu">
+
+        <!-- cada link revisa qué página está activa para marcarla -->
+        <a href="/menu" class="{{ 'active' if active=='panel' else '' }}">
+            <i class="fas fa-chart-line"></i><span>Panel</span>
+        </a>
+
+        <a href="/reportes" class="{{ 'active' if active=='reportes' else '' }}">
+            <i class="fas fa-box-open"></i><span>Mis Reportes</span>
+        </a>
+
+        <a href="/perfil" class="{{ 'active' if active=='perfil' else '' }}">
+            <i class="fas fa-user"></i><span>Perfil</span>
+        </a>
+
+        <a href="/configuracion" class="{{ 'active' if active=='configuracion' else '' }}">
+            <i class="fas fa-cog"></i><span>Configuración</span>
+        </a>
+
+        <!-- cerrar sesión -->
+        <a href="/logout">
+            <i class="fas fa-right-from-bracket"></i><span>Cerrar sesión</span>
+        </a>
+
+    </div>
+
+    <!-- botón para colapsar la barra lateral -->
+    <div class="toggle" onclick="toggleSidebar()">
+        <i class="fas fa-angle-left" id="toggleIcon"></i>
+    </div>
+
+</div>
+
+<!-- contenido principal -->
+<div class="main">
+    {% block content %}{% endblock %}
+</div>
+
+<!-- botón flotante (solo si no estamos en perfil) -->
+{% if active != 'perfil' and not hide_fab %}
+
+<!-- botón principal -->
+<div class="fab" id="fab" onclick="toggleFabMenu()">
+    <i class="fas fa-plus"></i>
+</div>
+
+<!-- menú desplegable de botones flotantes -->
+<div class="fab-menu" id="fabMenu">
+    <a href="/formulario_perdido" class="fab-btn">
+        <i class="fas fa-search"></i>
+    </a>
+
+    <a href="/formulario_objeto_encontrado" class="fab-btn">
+        <i class="fas fa-box"></i>
+    </a>
+</div>
+
+{% endif %}
+
+<script>
+/* abrir y cerrar la barra lateral */
+function toggleSidebar(){
+    const sidebar = document.getElementById("sidebar");
+    const icon = document.getElementById("toggleIcon");
+
+    sidebar.classList.toggle("collapsed");
+
+    // cambiar icono según estado
+    if(sidebar.classList.contains("collapsed")){
+        icon.classList.replace("fa-angle-left","fa-angle-right");
+    }else{
+        icon.classList.replace("fa-angle-right","fa-angle-left");
+    }
+}
+
+/* abrir y cerrar el menú flotante */
+function toggleFabMenu(){
+    document.getElementById("fab").classList.toggle("active");
+    document.getElementById("fabMenu").classList.toggle("active");
+}
+</script>
+
+<!-- modal del perfil del usuario -->
+<div class="profile-modal-backdrop" id="profileModal">
+
+    <div class="profile-modal" role="dialog" aria-modal="true">
+
+        <!-- encabezado del modal -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <h3 style="margin:0;">Mi perfil</h3>
+            <button class="close-btn" onclick="closeProfileModal()">&times;</button>
+        </div>
+
+        <!-- contenido del modal -->
+        <div class="head">
+            <!-- foto del usuario -->
+            <img id="modalImg" src="https://via.placeholder.com/200" alt="Foto">
+
+            <!-- datos del usuario -->
+            <div class="info">
+                <div><b id="modalNombre">Nombre Apellido</b></div>
+                <div id="modalTelefono" style="font-size:13px;color:#666;margin-top:6px;"></div>
+                <div id="modalCorreo" style="font-size:13px;color:#666;margin-top:4px;"></div>
+            </div>
+        </div>
+
+        <!-- botón para ir a la página de edición -->
+        <div style="margin-top:12px;">
+            <a href="/perfil" class="tarjeta-btn" style="display:inline-block;text-decoration:none;">Editar perfil</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+/* cargar la foto del perfil al iniciar la página */
+document.addEventListener('DOMContentLoaded', async function(){
+    try{
+        const res = await fetch('/datos_perfil');
+        const data = await res.json();
+        
+        // si hay datos de foto del usuario, se muestra
+        if (data.ok && data.datos) {
+            const img = document.getElementById('sidebarProfileImg');
+            img.src = data.datos.FOTO_PERFIL || '/static/img/image.png';
+        }
+    }catch(e){ /* ignorar error */ }
+});
+
+/* abrir modal de perfil con los datos del usuario */
+async function openProfileModal(){
+    try{
+        const res = await fetch('/datos_perfil');
+        const data = await res.json();
+        if (!data.ok) return;
+
+        const info = data.datos || {};
+
+        // colocar datos en el modal
+        document.getElementById('modalImg').src = info.FOTO_PERFIL || 'https://via.placeholder.com/200';
+        document.getElementById('modalNombre').textContent = 
+            (info.NOMBRE||'') + (info.APELLIDO?(' ' + info.APELLIDO):'');
+
+        document.getElementById('modalTelefono').textContent = info.TELEFONO || '';
+        document.getElementById('modalCorreo').textContent = info.CORREO || '';
+
+        // mostrar modal
+        document.getElementById('profileModal').style.display = 'flex';
+    }catch(e){ console.error(e); }
+}
+
+/* cerrar modal */
+function closeProfileModal(){
+    document.getElementById('profileModal').style.display = 'none';
+}
+</script>
+
+</body>
+</html>

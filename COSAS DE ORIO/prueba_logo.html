@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O.R.I.O</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+</head>
+
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Libre+Baskerville:wght@400;700&display=swap');
+
+:root{
+--royal:#112250;
+--sapphire:#3C507D;
+--swan:#F5F0E9;
+--gold:#E0C58F;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:linear-gradient(180deg,var(--royal),var(--sapphire));
+font-family:'Baskervville', serif;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+/* CONTENEDOR */
+.hero{
+position:relative;
+width:1500px;
+height:700px;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 25px 60px rgba(0,0,0,.5);
+}
+
+/* CARRUSEL */
+.slides{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+transition:transform .8s ease;
+}
+
+.slide{
+	min-width:100%;
+	height:100%;
+	background-size:cover;
+	/* Mover el foco de la imagen hacia la derecha para que no lo tape el panel blanco */
+	background-position: calc(50% + 140px) center;
+	position:relative;
+}
+
+/* IMÁGENES */
+.slide1{
+background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee');
+}
+.slide2{
+background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470');
+}
+.slide3{
+background-image:url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e');
+}
+
+/* Overlay oscuro elegante */
+.slide::after{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(to right, rgba(17,34,80,.5), rgba(17,34,80,.2));
+}
+
+/* Responsive: reducir el desplazamiento en pantallas pequeñas */
+@media (max-width:1200px){
+	.slide{ background-position: calc(50% + 60px) center; }
+}
+
+@media (max-width:900px){
+	.slide{ background-position: center; }
+}
+
+/* PARTE BLANCA CON SVG */
+.hero-left{
+position:absolute;
+width:50%;
+height:100%;
+z-index:2;
+}
+
+.hero-left svg{
+width:100%;
+height:100%;
+position:absolute;
+top:0;
+left:0;
+}
+
+.hero-content{
+position:absolute;
+top:50%;
+left:80px;
+transform:translateY(-50%);
+max-width:400px;
+}
+
+.hero-content h1{
+font-family:'Bodoni Moda', serif;
+font-size:48px;
+color:var(--royal);
+margin-bottom:20px;
+}
+
+.hero-content p{
+color:var(--royal);
+line-height:1.6;
+margin-bottom:30px;
+}
+
+.btn{
+display:inline-block;
+padding:14px 40px;
+background:var(--royal);
+color:var(--swan);
+text-decoration:none;
+border-radius:30px;
+font-family:'Bodoni Moda', serif;
+transition:.3s;
+}
+
+.btn:hover{
+background:var(--sapphire);
+}
+
+/* PUNTOS */
+.dots{
+position:absolute;
+bottom:35px;
+left:120px;
+z-index:3;
+display:flex;
+gap:12px;
+}
+
+.dot{
+width:10px;
+height:10px;
+border-radius:50%;
+background:#ccc;
+cursor:pointer;
+}
+
+.dot.active{
+background:var(--royal);
+}
+
+/* NAVBAR */
+nav{
+width:100%;
+max-width:1500px;
+height:90px;
+margin:0 auto;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+padding:0 60px;
+
+position:absolute;
+top:0;
+left:50%;
+transform:translateX(-50%);
+z-index:5;
+
+/* apariencia de navbar */
+background:rgba(17,34,80,0.35);
+backdrop-filter:blur(10px);
+border-bottom:1px solid rgba(255,255,255,0.15);
+}
+
+/* CONTENEDOR LOGO */
+.logo{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+/* IMAGEN LOGO */
+.logo-image{
+width:44px;
+height:44px;
+object-fit:contain;
+display:block;
+}
+
+/* TEXTO LOGO */
+.logo-text{
+font-family:'Libre Baskerville', serif;
+font-size:24px;
+font-weight:700;
+color:var(--gold);
+line-height:1;
+}
+
+/* SUBTITULO */
+.subtitle{
+font-size:11px;
+font-family:'Poppins', sans-serif;
+color:var(--swan);
+opacity:.8;
+margin-top:2px;
+}
+
+/* LINKS NAV */
+.nav-links{
+display:flex;
+align-items:center;
+list-style:none;
+gap:40px;
+}
+
+/* LINKS */
+.nav-links li a{
+text-decoration:none;
+color:var(--swan);
+font-size:15px;
+font-family:'Poppins', sans-serif;
+font-weight:500;
+letter-spacing:.5px;
+transition:.25s;
+}
+
+/* HOVER */
+.nav-links li a:hover{
+color:var(--gold);
+}
+
+
+/* CONTENEDOR DEL LOGO */
+.logo{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+/* IMAGEN SVG DEL LOGO */
+.logo-image{
+width:50px;      /* tamaño del logo */
+height:auto;     /* mantiene proporción */
+display:block;
+}
+
+/* TEXTO DEL LOGO */
+.logo-text{
+font-family:'Libre Baskerville', serif;
+font-size:24px;
+font-weight:700;
+color:var(--gold);
+line-height:1;
+}
+
+/* SUBTITULO */
+.subtitle{
+font-size:11px;
+font-family:'Poppins', sans-serif;
+color:var(--swan);
+opacity:.8;
+margin-top:2px;
+max-width:260px;   /* evita que se alargue demasiado */
+}
+
+.logo-image svg{
+width:52px;
+}
+
+</style>
+
+
+<body>
+
+<div class="hero">
+<nav class="navbar">
+
+<div class="logo">
+<img src="file (5).svg" class="logo-image">
+
+<div>
+<div class="logo-text">O.R.I.O</div>
+<div class="subtitle">Organizador de Recursos e Identificador de Objetos</div>
+</div>
+</div>
+
+<ul class="nav-links">
+<li><a href="#">INICIO</a></li>
+<li><a href="#">ACERCA DE</a></li>
+<li><a href="#">CONTACTANOS</a></li>
+</ul>
+
+</nav>
+<!-- CARRUSEL -->
+
+<div class="slides" id="slides">
+    <div class="slide">
+        <img src="{{ url_for('static', filename='img/bienvenido1.png') }}" alt="bienvenido 1">
+    </div>
+
+    <div class="slide">
+        <img src="{{ url_for('static', filename='img/bienvenido2.png') }}" alt="bienvenido 2">
+    </div>
+
+    <div class="slide">
+        <img src="{{ url_for('static', filename='img/bienvenido3.png') }}" alt="bienvenido 3">
+    </div>
+</div>
+
+
+<!-- PARTE BLANCA CON CURVA EXACTA -->
+<div class="hero-left">
+
+<svg viewBox="0 0 600 650" preserveAspectRatio="none">
+<path d="
+M0,0 
+L520,0 
+C470,120 470,260 500,360
+C530,480 420,650 600,650
+L0,650 
+Z" fill="#F5F0E9"/>
+</svg>
+
+<div class="hero-content">
+<h1>Bienvenido a O.R.I.O</h1>
+<p>La plataforma donde puedes reportar, buscar y encontrar objetos perdidos. Rápido, confiable y pensado para todos.</p>
+<a href="/inicio" class="btn">Empezar</a>
+</div>
+
+</div>
+
+<!-- PUNTOS -->
+<div class="dots">
+<div class="dot active" onclick="moveSlide(0)"></div>
+<div class="dot" onclick="moveSlide(1)"></div>
+<div class="dot" onclick="moveSlide(2)"></div>
+</div>
+
+</div>
+
+<script>
+
+let index = 0;
+const slides = document.getElementById('slides');
+const dots = document.querySelectorAll('.dot');
+
+function moveSlide(i){
+index = i;
+slides.style.transform = `translateX(-${i * 100}%)`;
+dots.forEach(dot => dot.classList.remove('active'));
+dots[i].classList.add('active');
+}
+
+setInterval(()=>{
+index++;
+if(index > 2) index = 0;
+moveSlide(index);
+},5000);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O.R.I.O</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ============================= */
+/* VARIABLES */
+/* ============================= */
+
+:root{
+--royal:#112250;
+--sapphire:#3C507D;
+--swan:#F5F0E9;
+}
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:linear-gradient(180deg,var(--royal),var(--sapphire));
+font-family:'Baskervville', serif;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+overflow:hidden;
+}
+
+/* ============================= */
+/* ESTRELLAS (FONDO COMPLETO) */
+/* ============================= */
+
+.stars-zone{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+pointer-events:none;
+z-index:0;
+}
+
+.star{
+position:absolute;
+background:white;
+clip-path:polygon(
+50% 0%, 62% 35%, 100% 50%,
+62% 65%, 50% 100%,
+38% 65%, 0% 50%, 38% 35%
+);
+animation:twinkle 3s infinite ease-in-out;
+}
+
+@keyframes twinkle{
+0%,100%{ transform:scale(1); opacity:.4; }
+50%{ transform:scale(1.6); opacity:1; }
+}
+
+/* ============================= */
+/* HERO / CARRUSEL */
+/* ============================= */
+
+.hero{
+position:relative;
+z-index:2;
+width:1200px;
+height:650px;
+border-radius:25px;
+overflow:hidden;
+box-shadow:0 25px 60px rgba(0,0,0,.5);
+}
+
+/* Slides */
+.slides{
+position:absolute;
+width:100%;
+height:100%;
+display:flex;
+transition:transform .8s ease;
+}
+
+.slide{
+min-width:100%;
+height:100%;
+background-size:cover;
+background-position:calc(50% + 140px) center;
+position:relative;
+}
+
+/* Overlay elegante */
+.slide::after{
+content:"";
+position:absolute;
+width:100%;
+height:100%;
+background:linear-gradient(to right, rgba(17,34,80,.5), rgba(17,34,80,.2));
+}
+
+/* ============================= */
+/* PARTE BLANCA */
+/* ============================= */
+
+.hero-left{
+position:absolute;
+width:50%;
+height:100%;
+z-index:3;
+}
+
+.hero-left svg{
+width:100%;
+height:100%;
+position:absolute;
+top:0;
+left:0;
+}
+
+.hero-content{
+position:absolute;
+top:50%;
+left:80px;
+transform:translateY(-50%);
+max-width:400px;
+}
+
+.hero-content h1{
+font-family:'Bodoni Moda', serif;
+font-size:48px;
+color:var(--royal);
+margin-bottom:20px;
+}
+
+.hero-content p{
+color:var(--royal);
+line-height:1.6;
+margin-bottom:30px;
+}
+
+.btn{
+display:inline-block;
+padding:14px 40px;
+background:var(--royal);
+color:var(--swan);
+text-decoration:none;
+border-radius:30px;
+font-family:'Bodoni Moda', serif;
+transition:.3s;
+}
+
+.btn:hover{
+background:var(--sapphire);
+}
+
+/* ============================= */
+/* PUNTOS */
+/* ============================= */
+
+.dots{
+position:absolute;
+bottom:35px;
+left:120px;
+z-index:4;
+display:flex;
+gap:12px;
+}
+
+.dot{
+width:10px;
+height:10px;
+border-radius:50%;
+background:#ccc;
+cursor:pointer;
+}
+
+.dot.active{
+background:var(--royal);
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ESTRELLAS -->
+<div class="stars-zone" id="stars-zone"></div>
+
+<div class="hero">
+
+<div class="slides" id="slides">
+<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1500530855697-b586d89ba3ee')"></div>
+<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1501785888041-af3ef285b470')"></div>
+<div class="slide" style="background-image:url('https://images.unsplash.com/photo-1493246507139-91e8fad9978e')"></div>
+</div>
+
+<div class="hero-left">
+<svg viewBox="0 0 600 650" preserveAspectRatio="none">
+<path d="M0,0 L520,0 C470,120 470,260 500,360 C530,480 420,650 600,650 L0,650 Z" fill="#F5F0E9"/>
+</svg>
+
+<div class="hero-content">
+<h1>Bienvenido a O.R.I.O</h1>
+<p>La plataforma donde puedes reportar, buscar y encontrar objetos perdidos. Rápido, confiable y pensado para todos.</p>
+<a href="#" class="btn">Empezar</a>
+</div>
+</div>
+
+<div class="dots">
+<div class="dot active" onclick="moveSlide(0)"></div>
+<div class="dot" onclick="moveSlide(1)"></div>
+<div class="dot" onclick="moveSlide(2)"></div>
+</div>
+
+</div>
+
+<script>
+
+/* ============================= */
+/* GENERADOR DE MUCHAS ESTRELLAS */
+/* ============================= */
+
+const starsContainer = document.getElementById("stars-zone");
+
+function createStars(amount){
+for(let i = 0; i < amount; i++){
+
+const star = document.createElement("span");
+star.classList.add("star");
+
+const size = Math.random() * 6 + 2;
+star.style.width = size + "px";
+star.style.height = size + "px";
+
+star.style.top = Math.random() * 100 + "%";
+star.style.left = Math.random() * 100 + "%";
+
+star.style.animationDelay = Math.random() * 5 + "s";
+
+starsContainer.appendChild(star);
+}
+}
+
+createStars(90); // 🔥 MÁS ESTRELLAS (puedes subir a 250 o 300)
+
+/* ============================= */
+/* CARRUSEL */
+/* ============================= */
+
+let index = 0;
+const slides = document.getElementById('slides');
+const dots = document.querySelectorAll('.dot');
+
+function moveSlide(i){
+index = i;
+slides.style.transform = `translateX(-${i * 100}%)`;
+dots.forEach(dot => dot.classList.remove('active'));
+dots[i].classList.add('active');
+}
+
+setInterval(()=>{
+index++;
+if(index > 2) index = 0;
+moveSlide(index);
+},5000);
+
+</script>
+
+</body>
+</html>

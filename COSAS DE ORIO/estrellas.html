@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O.R.I.O</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+</head>
+
+<body>
+
+<div class="hero">
+<nav class="navbar">
+
+<div class="logo">
+ <object data="file (5).svg" type="image/svg+xml"></object>
+    <div>
+        <div class="logo-text">O.R.I.O</div>
+        <div class="subtitle">Organizador de Recursos e Identificador de Objetos</div>
+    </div>
+</div>
+
+<ul class="nav-links">
+<li><a href="#">INICIO</a></li>
+<li><a href="#">ACERCA DE</a></li>
+<li><a href="#">CONTACTANOS</a></li>
+</ul>
+
+</nav>
+<!-- CARRUSEL -->
+
+<div class="slides" id="slides">
+    <div class="slide">
+        <img src="{{ url_for('static', filename='img/bienvenido1.png') }}" alt="bienvenido 1">
+    </div>
+
+    <div class="slide">
+        <img src="{{ url_for('static', filename='img/bienvenido2.png') }}" alt="bienvenido 2">
+    </div>
+
+    <div class="slide">
+        <img src="{{ url_for('static', filename='img/bienvenido3.png') }}" alt="bienvenido 3">
+    </div>
+</div>
+
+
+<!-- PARTE BLANCA CON CURVA EXACTA -->
+<div class="hero-left">
+
+<svg viewBox="0 0 600 650" preserveAspectRatio="none">
+<path d="
+M0,0 
+L520,0 
+C470,120 470,260 500,360
+C530,480 420,650 600,650
+L0,650 
+Z" fill="#F5F0E9"/>
+</svg>
+
+<div class="hero-content">
+<h1>Bienvenido a O.R.I.O</h1>
+<p>La plataforma donde puedes reportar, buscar y encontrar objetos perdidos. Rápido, confiable y pensado para todos.</p>
+<a href="/inicio" class="btn">Empezar</a>
+</div>
+
+</div>
+
+<!-- PUNTOS -->
+<div class="dots">
+<div class="dot active" onclick="moveSlide(0)"></div>
+<div class="dot" onclick="moveSlide(1)"></div>
+<div class="dot" onclick="moveSlide(2)"></div>
+</div>
+
+</div>
+
+<script>
+
+let index = 0;
+const slides = document.getElementById('slides');
+const dots = document.querySelectorAll('.dot');
+
+function moveSlide(i){
+index = i;
+slides.style.transform = `translateX(-${i * 100}%)`;
+dots.forEach(dot => dot.classList.remove('active'));
+dots[i].classList.add('active');
+}
+
+setInterval(()=>{
+index++;
+if(index > 2) index = 0;
+moveSlide(index);
+},5000);
+
+</script>
+
+</body>
+</html>

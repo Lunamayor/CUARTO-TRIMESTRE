@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O.R.I.O</title>
+
+<!-- Fuentes y estilos -->
+<link href="https://fonts.googleapis.com/css2?family=Baskervville&family=Bodoni+Moda:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/modos.css') }}">
+</head>
+
+<body>
+
+<div class="hero"> <!-- CONTENEDOR PRINCIPAL -->
+
+<!-- CARRUSEL -->
+<div class="slides" id="slides">
+	<div class="slide" style="background-image: url('{{ url_for('static', filename='img/bienvenido1.png') }}')"></div>
+	<div class="slide" style="background-image: url('{{ url_for('static', filename='img/bienvenido2.png') }}')"></div>
+	<div class="slide" style="background-image: url('{{ url_for('static', filename='img/bienvenido3.png') }}')"></div>
+</div>
+
+<!-- PARTE BLANCA CON CURVA EXACTA -->
+<div class="hero-left">
+
+    <!-- SVG con la curva exacta -->
+<svg viewBox="0 0 600 650" preserveAspectRatio="none">
+<path d="
+M0,0 
+L520,0 
+C470,120 470,260 500,360
+C530,480 420,650 600,650
+L0,650 
+Z" fill="#F5F0E9"/>
+</svg>
+
+<!-- CONTENIDO DE TEXTO -->
+<div class="hero-content">
+<h1>Bienvenido a O.R.I.O</h1>
+<p>La plataforma donde puedes reportar, buscar y encontrar objetos perdidos. Rápido, confiable y pensado para todos.</p>
+<a href="/inicio" class="btn">Empezar</a>
+</div>
+
+</div>
+
+<!-- PUNTOS -->
+<div class="dots">
+<div class="dot active" onclick="moveSlide(0)"></div>
+<div class="dot" onclick="moveSlide(1)"></div>
+<div class="dot" onclick="moveSlide(2)"></div>
+</div>
+
+</div>
+
+<script>
+
+// -- Script para el carrusel -->
+let index = 0;
+const slides = document.getElementById('slides');
+const dots = document.querySelectorAll('.dot');
+
+// -- Script para el carrusel -->
+function moveSlide(i){
+index = i;
+slides.style.transform = `translateX(-${i * 100}%)`;  // Mueve el carrusel a la posición correcta
+dots.forEach(dot => dot.classList.remove('active')); // Elimina la clase 'active' de todos los puntos
+dots[i].classList.add('active');
+}
+
+// -- Cambia de imagen cada 5 segundos -->
+setInterval(()=>{
+index++;
+if(index > 2) index = 0;
+moveSlide(index);
+},5000);
+
+</script>
+
+</body>
+</html>
