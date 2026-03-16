@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos - Mi Tienda Tech</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Mi Tienda Tech</h1>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="carrito.html">Carrito 🛒 (<span id="contador">0</span>)</a>
+    </nav>
+</header>
+
+<h2 class="titulo-pagina">Todos los productos</h2>
+
+<section class="productos">
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/22/a0/80/22a08038841228ad1850a8c7c5cba780.jpg" alt="Twilight Sparkle">
+        <h3>Twilight Sparkle</h3>
+        <p class="desc">es una de las muñecas que mas se ha utilizado en las series, y peliculas, es una de las princesas y ella es la princesa de la amistad.</p>
+        <p class="precio">$300,000</p>
+        <button onclick="agregarProducto('Twilight Sparkle', 300000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://wallpaper-house.com/data/out/9/wallpaper2you_344613.png" alt="Rainbow Dash">
+        <h3>Rainbow Dash</h3>
+        <p class="desc">es una de las muñecas más populares, conocida por su velocidad y espíritu aventurero.</p>
+        <p class="precio">$270,000</p>
+        <button onclick="agregarProducto('Rainbow Dash', 270000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/20/04/e3/2004e31e6d011e50575ae779961a7de1.jpg" alt=" Applejack">
+        <h3>Applejack</h3>
+        <p class="desc">es una de las muñecas más queridas, conocida por su fuerte sentido de justicia y su amor por la agricultura.</p>
+        <p class="precio">$280,000</p>
+        <button onclick="agregarProducto('Applejack', 280000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/736x/13/c1/53/13c153b32ed3330bd978cfcdbd4ec59b.jpg" alt="Pinkie Pie">
+        <h3>Pinkie Pie</h3>
+        <p class="desc">es una de las muñecas más divertidas, conocida por su personalidad alegre y su amor por las fiestas.</p>
+        <p class="precio">$240,000</p>
+        <button onclick="agregarProducto('Pinkie Pie', 240000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/4e/1d/96/4e1d9664d28269c29e1092a2cda84ce1.jpg" alt="Rarity">
+        <h3>Rarity</h3>
+        <p class="desc">es una de las muñecas más elegantes, conocida por su amor por la moda y su estilo refinado.</p>
+        <p class="precio">$280,000</p>
+        <button onclick="agregarProducto('Rarity', 280000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/736x/65/21/a4/6521a4272db4fe5dee48058246bc2b8c.jpg" alt="Fluttershy">
+        <h3>Fluttershy</h3>
+        <p class="desc">es una de las muñecas más amables, conocida por su amor por los animales y su naturaleza tímida.</p>
+        <p class="precio">$260,000</p>
+        <button onclick="agregarProducto('Fluttershy', 260000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/736x/18/e2/5e/18e25ea6b3121c153c58dea55d9d601e.jpg" alt="Princesa Celestia">
+        <h3>Princesa Celestia</h3>
+        <p class="desc">es una de las muñecas más respetadas, conocida por su sabiduría y su rol como líder de Equestria.</p>
+        <p class="precio">$320,000</p>
+        <button onclick="agregarProducto('Princesa Celestia', 320000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/b4/cb/d9/b4cbd9e10b5b32222a0aa0d0175227da.jpg" alt="Princesa Luna">
+        <h3>Princesa Luna</h3>
+        <p class="desc">es una de las muñecas más respetadas, conocida por su sabiduría y su rol como líder de Equestria.</p>
+        <p class="precio">$300,000</p>
+        <button onclick="agregarProducto('Princesa Luna', 300000)">Agregar</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/c7/ae/4a/c7ae4a11124abb7c49f6e09a37d2eaa4.jpg" alt="Princesa Cadance">
+        <h3>Princesa Cadance</h3>
+        <p class="desc">es una de las muñecas más respetadas, conocida por su sabiduría y su rol como la princesa del imperio de cristal.</p>
+        <p class="precio">$340,000</p>
+        <button onclick="agregarProducto('Princesa Cadance', 340000)">Agregar</button>
+    </div>
+
+
+
+
+
+    <div class="card">
+        <img src="https://i.pinimg.com/736x/97/5e/ca/975ecac15c8249f7587bd0ecee0b2e3c.jpg" alt="Princesa Flurry Heart">
+        <h3>Princesa Flurry Heart</h3>
+        <p class="desc">primera alicornio nacida naturalmente en Equestria, destacando por ser increíblemente poderosa desde bebé. Es hiperactiva, juguetona e inocente, capaz de destruir el Corazón de Cristal con su llanto o romper techos con magia incontrolada.</p>
+        <p class="precio">$350.000</p>
+        <button onclick="agregarProducto('Princesa Flurry Heart', 350000)">Agregar</button>
+    </div>
+
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>
