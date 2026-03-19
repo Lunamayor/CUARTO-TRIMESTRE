@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Tienda Tech - Inicio</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header>
+    <h1>Mi Tienda Tech</h1>
+    <nav>
+        <a href="index.html">Inicio</a>
+        <a href="productos.html">Productos</a>
+        <a href="carrito.html">Carrito 🛒 (<span id="contador">0</span>)</a>
+    </nav>
+</header>
+
+<!-- HERO / PRESENTACIÓN -->
+<section class="hero">
+    <h2>Bienvenido a Mi Tienda Tech</h2>
+    <p>Los mejores productos de muñecas de las series y las peliculas de my little pony equestria girls, te tenemos los mejores precios. Calidad, rapidez y confianza en un solo lugar, con nuestras muñecas, tus hijos podran judar de una forma segura, pero sobnre todo, deviertida.</p>
+</section>
+
+<!-- SOBRE NOSOTROS -->
+<section class="sobre-nosotros">
+    <h2>¿Quiénes somos?</h2>
+    <p>
+        Somos una tienda especializada en las muñecas de my little pony equestria girls.  
+        Ofrecemos productos de excelente calidad, atención rápida  
+        y una experiencia de compra fácil y segura.
+    </p>
+</section>
+
+<!-- POR QUÉ ELEGIRNOS -->
+<section class="ventajas">
+    <h2>¿Por qué elegirnos?</h2>
+
+    <div class="ventajas-container">
+        <div class="ventaja">
+            <h3>📦 Envíos rápidos</h3>
+            <p>Entregamos tus productos en tiempo récord para que los disfrutes cuanto antes.</p>
+        </div>
+
+        <div class="ventaja">
+            <h3>💳 Pagos seguros</h3>
+            <p>Métodos de pago confiables y protegidos para tu tranquilidad.</p>
+        </div>
+
+        <div class="ventaja">
+            <h3>✨ Calidad garantizada</h3>
+            <p>Todos nuestros productos son seleccionados y probados para asegurar su rendimiento.</p>
+        </div>
+    </div>
+</section>
+
+<!-- PRODUCTOS DESTACADOS -->
+<h2 class="titulo-pagina">Productos Destacados</h2>
+<p class="subtitulo">Algunos de los favoritos de nuestros clientes</p>
+
+<section class="productos">
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/22/a0/80/22a08038841228ad1850a8c7c5cba780.jpg" alt="Twilight Sparkle">
+        <h3>Twilight Sparkle</h3>
+        <p class="desc">es una de las muñecas que mas se ha utilizado en las series, y peliculas, es una de las princesas y ella es la princesa de la amistad.</p>
+        <p class="precio">$2500</p>
+        <button onclick="agregarProducto('Twilight Sparkle', 300.000)">Agregar al carrito</button>
+    </div>
+
+    <div class="card">
+        <img src="https://wallpaper-house.com/data/out/9/wallpaper2you_344613.png" alt="Rainbow Dash">
+        <h3>Rainbow Dash</h3>
+        <p class="desc">es una de las muñecas más populares, conocida por su velocidad y espíritu aventurero.</p>
+        <p class="precio">$270.000</p>
+        <button onclick="agregarProducto('Rainbow Dash', 270.000)">Agregar al carrito</button>
+    </div>
+
+    <div class="card">
+        <img src="https://i.pinimg.com/1200x/20/04/e3/2004e31e6d011e50575ae779961a7de1.jpg" alt=" Applejack">
+        <h3>Applejack</h3>
+        <p class="desc">es una de las muñecas más queridas, conocida por su fuerte sentido de justicia y su amor por la agricultura.</p>
+        <p class="precio">$280.000</p>
+        <button onclick="agregarProducto('Applejack', 280.000)">Agregar al carrito</button>
+    </div>
+</section>
+
+
+<!-- PIE DE PÁGINA -->
+<footer>
+    <p>© 2026 Mi Tienda Tech — Todos los derechos reservados.</p>
+</footer>
+
+<script src="script.js"></script>
+
+</body>
+</html>
